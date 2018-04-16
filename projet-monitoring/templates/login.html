@@ -1,0 +1,33 @@
+{% extends 'layout.html' %} {% block titre %}
+    Connexion {% endblock %} {% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">WWW-STATUS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" 
+data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" 
+aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto my-2 my-lg-0">
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+                  <li class="nav-item">
+                        <a class="nav-link" href="/login/">Connexion <span 
+class="sr-only">(current)</span></a>
+                  </li>
+        </ul>
+      </div>
+    </nav>
+    <h1>Connexion</h1>
+    <form action="" method="POST">
+        <fieldset>
+            <label for="email">Email :</label><br/>
+            <input type="text" name="email" id="email" /><br/><br/>
+            <label for="password">Password :</label><br/>
+            <input type="password" name="password" id="password" /><br/><br/>
+            <input type="submit" value="Connecter"/>
+        </fieldset>
+    </form>
+    {% if user %}
+        Bonjour {{ user.0 }}, vous êtes bien connecté !
+    {% endif %} {% endblock %}

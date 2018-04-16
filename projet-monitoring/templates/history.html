@@ -1,0 +1,39 @@
+<!DOCTYPE html> <html lang="en"> <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" 
+href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <title>
+        List of websites | wwwstatus
+    </title> </head> <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">WWW-STATUS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" 
+aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto my-2 my-lg-0">
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+                  <li class="nav-item">
+                        <a class="nav-link" href="/login/">Connexion <span 
+class="sr-only">(current)</span></a>
+                  </li>
+        </ul>
+    </div> </nav> <section class="container-fluid body-container">
+    <div class="container text-center">
+        <h1 class="show-site-title"><a href="{{ history[0][0] }}" rel="nofollow" 
+target="_blank">{{ history[0][0]
+            }}</a>
+        </h1>
+        <h2>Historique des status</h2>
+        <ul class="show-site-historic">
+            {% for history in history %}
+                <li>{{ history[2] }} : {{ history[1] }} - </li>
+            {% endfor %}
+        </ul>
+    </div> </section> </body>
+</html>

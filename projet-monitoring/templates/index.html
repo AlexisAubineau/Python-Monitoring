@@ -1,0 +1,43 @@
+<!DOCTYPE html> <html lang="en"> <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+    <link rel="stylesheet" type="text/css" 
+href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <title>
+        List of websites | wwwstatus
+    </title> </head> <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">WWW-STATUS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" 
+aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto my-2 my-lg-0">
+        </ul>
+        <ul class="navbar-nav my-2 my-lg-0">
+                  <li class="nav-item">
+                        <a class="nav-link" href="/login/">Connexion <span 
+class="sr-only">(current)</span></a>
+                  </li>
+        </ul>
+    </div> </nav> <section class="container-fluid body-container">
+    <h1 class="text-center">Liste des sites</h1>
+    <div class="row websites-container text-center">
+        {% for link in link %}
+            <div class="card bg-success text-white mb-3 website-card">
+                <div class="card-header website-card-title"><h4><a href="{{ link[1] }}">{{ 
+link[1] }}</a></h4></div>
+                <div class="card-body">
+                    <div class="website-card-code">HTTP : {{ link[2] }}</div>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('history', id=link[0]) }}" class="btn btn-lg 
+btn-white">Voir la fiche</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div> </section> </body>
+</html>

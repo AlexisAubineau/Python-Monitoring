@@ -1,0 +1,37 @@
+{% extends 'layout.html' %} {% block titre %}
+    Administration {% endblock %} {% block body %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">WWW-STATUS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" 
+aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto my-2 my-lg-0"></ul>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">Administration</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('admin_logout') }}">Déconnexion <span 
+class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <h2 >Editez {{ link[1] }}</h2>
+        <p>Voulez vous vraiment supprimer le site ?</p>
+        <form action="" method="POST" >
+            <fieldset>
+            <label for="Page">Page internet:</label><br/>
+            <input type="text" name="Page" id="Page" required="required" value="{{ link[1] 
+}}" /><br/><br/>
+            <input type="submit" value="Editez"/>
+            <a href="/admin/">
+                <input type="button" value="Annulez">
+                </input>
+            </a>
+            </fieldset>
+        </form>
+{% endblock %}

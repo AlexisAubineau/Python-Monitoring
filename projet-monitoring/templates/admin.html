@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block titre %}
+Administration
+{% endblock %}
+
+{% block body %}
+
+<section class="container-fluid body-container">
+
+    <div class="container text-center">
+
+        <h2>Liste des sites</h2>
+
+        <br/>
+        <a href="{{ url_for('admin_add') }}" role="button" class="btn btn-success">Ajouter un site</a>
+        <br/>
+        <br/>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Url</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for link in link %}
+            <tr>
+                <th scope="row">{{ link[0] }}</th>
+                <td>{{ link[1] }}</td>
+                <td>
+                    <a href="{{ url_for('edit', id=link[0]) }}" role="button" class="btn btn-primary">Editer</a>
+                    <a href="{{ url_for('delete', id=link[0]) }}" role="button" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+.body-container
+{
+    padding-top: 70px;
+}
+
+.website-card
+{
+    width: 20%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+}
+
+.websites-container
+{
+    margin-top: 70px;
+}
+
+.website-card-icon
+{
+    font-size: 50px;
+}
+
+.website-card-code
+{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.website-card-title a
+{
+    color: #fff !important;
+}
+
+.btn-white
+{
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-white:hover
+{
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.show-site-title
+{
+    margin-bottom: 25px;
+}
+
+.show-site-historic
+{
+    margin-top: 25px;
+    font-size: 20px;
+}
+
+.admin-title-button
+{
+    line-height: 65px;
+    vertical-align: bottom;
+}
+
+#flash-messages-container
+{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+    text-align: right;
+}
+
+.flash-message-alert
+{
+    width: 350px;
+    margin-right: 45px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.alert.flash-message-alert {
+    display: inline-block;
+    margin-left: 95px;
+    position: relative;
+    font-size: 16px;
+}
+
+.admin-subtitle {
+    font-size: 20px;
+    margin-bottom: 50px;
+}
