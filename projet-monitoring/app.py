@@ -4,13 +4,13 @@
 ########## Importation ##########
 
 from flask import Flask, render_template, url_for, redirect, request, g, session
-import mysql.connector 
-from passlib.hash import argon2 
 from apscheduler.schedulers.background import BackgroundScheduler 
 from apscheduler.triggers.interval import IntervalTrigger 
+from passlib.hash import argon2 
 import atexit 
 import requests 
 import datetime
+import mysql.connector 
 
 ########## Def ##########
 
@@ -35,22 +35,7 @@ def get_db():
 
 def commit():
     g.mysql_connection.commit()
-
-def know_status(url_web):
-    status_code = 999
-    try:
-        r = requests.get(url_web, timeout=2)
-        r.raise_for_status()
-        status_code = r.status_code
-    except requests.exceptions.HTTPError as errh:
-        status_code = r.status_code
-    except requests.exceptions.ConnectionError as errc:
-        pass
-    except requests.exceptions.Timeout as errt:
-        pass
-    except requests.exceptions.RequestException as err:
-        pass
-    return str(status_code)
+    
 
 def all_status():
     with app.app_context():
@@ -67,6 +52,22 @@ def all_status():
             db = get_db()
             db.execute('INSERT INTO history (id_web, request_response, date_last_request) VALUES (%(id)s, %(status)s, %(date_request)s)', {'id':id, 'status': status, 'date_request':date})
         commit()
+
+def know_status(url_web):
+    status_code = 999
+    try:
+        r = requests.get(url_web, timeout=2)
+        r.raise_for_status()
+        status_code = r.status_code
+    except requests.exceptions.HTTPError as errh:
+        status_code = r.status_code
+    except requests.exceptions.ConnectionError as errc:
+        pass
+    except requests.exceptions.Timeout as errt:
+        pass
+    except requests.exceptions.RequestException as err:
+        pass
+    return str(status_code)
 
 
 ########## Scheduler ##########
@@ -89,13 +90,6 @@ def index():
     db.execute('SELECT l.id, l.url_web, h.request_response FROM link l, history h WHERE l.id = h.id_web and h.date_last_request=(SELECT MAX(date_last_request) FROM history hi WHERE hi.id_web = l.id) GROUP BY l.id, l.url_web, h.request_response')
     link = db.fetchall()
     return render_template("index.html", link=link)
-
-@app.route('/history/<int:id>')
-def history (id):
-    db = get_db()
-    db.execute('SELECT l.url_web, h.request_response, h.date_last_request FROM link l, history h WHERE l.id = h.id_web AND l.id = %(id)s ORDER BY date_last_request DESC', {'id': id})
-    history=db.fetchall()
-    return render_template("history.html", history = history)
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -126,20 +120,6 @@ def admin():
         return redirect(url_for('login'))
     return render_template('admin.html', user=session['user'], link=link)
 
-@app.route('/admin/add', methods=['GET', 'POST'])
-def admin_add():
-    if not session.get('user') or not session.get('user')[2]:
-        return redirect(url_for('login'))
-    
-    if request.method == 'POST':
-        page = str(request.form.get('Page'))
-        db = get_db()
-        db.execute('INSERT INTO link (url_web) VALUES (%(page)s)', {'page': page})
-        commit()
-        return redirect(url_for('admin'))
-
-    return render_template('admin_add.html')
-
 @app.route('/admin/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     if not session.get('user') or not session.get('user')[2]:
@@ -157,6 +137,28 @@ def edit(id):
         link = db.fetchone()
         return render_template('admin_edit.html', user=session['user'], link=link)
 
+
+@app.route('/history/<int:id>')
+def history (id):
+    db = get_db()
+    db.execute('SELECT l.url_web, h.request_response, h.date_last_request FROM link l, history h WHERE l.id = h.id_web AND l.id = %(id)s ORDER BY date_last_request DESC', {'id': id})
+    history=db.fetchall()
+    return render_template("history.html", history = history)
+
+@app.route('/admin/add', methods=['GET', 'POST'])
+def admin_add():
+    if not session.get('user') or not session.get('user')[2]:
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        page = str(request.form.get('Page'))
+        db = get_db()
+        db.execute('INSERT INTO link (url_web) VALUES (%(page)s)', {'page': page})
+        commit()
+        return redirect(url_for('admin'))
+
+    return render_template('admin_add.html')
+
 @app.route('/admin/delete/<int:id>', methods=['GET', 'POST'])
 def delete(id):
     if not session.get('user') or not session.get('user')[2]:
@@ -172,16 +174,16 @@ def delete(id):
         db.execute('SELECT id, url_web FROM link WHERE id = %(id)s', {'id': id})
         link = db.fetchone()
         return render_template('admin_del.html', user=session['user'], link=link)
+    
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'db'):
+        g.db.close()
 
 @app.route('/admin/logout')
 def admin_logout():
     session.clear()
     return redirect(url_for('login'))
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, 'db'):
-        g.db.close()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
